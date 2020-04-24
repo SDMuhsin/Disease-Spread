@@ -4,12 +4,12 @@ import random
 import imageio
 import matplotlib.animation as animation
 def plots(sa,ia,ra):
-    days=[i for i in range(1,2305)]
+    days=np.linspace(1,10,2304)
     plt.plot(sa,days, label='for st')
     plt.plot(ia,days, label='for it')
     plt.plot(ra,days, label='for rt')  
     plt.legend()
-    print(plt.show()) #The animation is causing the plots to hang. This needs to be debugged.
+    plt.show() #The animation is causing the plots to hang. This needs to be debugged. (EDIT: Solved)
     
 def start(narray):
     global S,I,R,N,st,it,rt,sa,ia,ra
@@ -52,16 +52,14 @@ def start(narray):
             ia.append(eq2)
             ra.append(eq3)
             
-    gifarray.append([plt.imshow(newmatrix)])
-            
+    gifarray.append([plt.imshow(newmatrix)])       
     return(newmatrix)
 #creating random matrix and plotting
 global narray
 narray=np.array([[0 for j in range(0,50)] for i in range(0,50)])
 narray[24][24]=2
-fig=plt.figure()
 plt.imshow(narray)
-plt.show()
+fig=plt.figure()
 print(narray)
 gifarray=[]
 #gifplot=[]
@@ -73,15 +71,18 @@ R=0
 repno=float(beta/gamma) #reproduction number
 for j in range(0,100):
     narray=start(narray)
-    
-#ani=animation.ArtistAnimation(fig, gifarray, interval=200, blit=True,repeat_delay=10)
+
+#plot the animation right after this j loop, it works
 #ani2=animation.ArtistAnimation(fig2,gifplot,interval=200, blit=True,repeat_delay=10)
+ani=animation.ArtistAnimation(fig, gifarray, interval=200, blit=True,repeat_delay=10)
 plt.show()
 plt.close()
-plots(sa,ia,ra)
 print(gifarray)
 print(S,I,R,N)
-
+s1=np.array(sa)
+i1=np.array(ia)
+r1=np.array(ra)
+plots(s1,i1,r1)
 
             
             
