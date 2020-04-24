@@ -3,6 +3,7 @@ import numpy as np
 import random
 import imageio
 import matplotlib.animation as animation
+
 def plots(sa,ia,ra):
     days=np.linspace(1,10,2304)
     plt.plot(sa,days, label='for st')
@@ -27,15 +28,6 @@ def start(narray):
             elif(narray[i][j]==1):#Symptom
                 I+=1
                 newmatrix[i][j]=2
-                '''if(narray[i+1][j]==2)
-                    newmatrix[i][j]=2 #give disease
-                
-                elif(narray[i-1][j]==2):
-                    newmatrix[i][j]=2
-                elif(narray[i][j+1]==2):
-                    newmatrix[i][j]=2
-                elif(narray[i][j-1]==2):
-                    newmatrix[i][j]=2'''
             #CASE 3 if there is a disease, since we have no cure, pass
             elif(narray[i][j]==2):
                 R+=1
@@ -69,7 +61,7 @@ S=0
 I=0
 R=0
 repno=float(beta/gamma) #reproduction number
-for j in range(0,100):
+for j in range(0,200):
     narray=start(narray)
 
 #plot the animation right after this j loop, it works
@@ -82,7 +74,7 @@ print(S,I,R,N)
 s1=np.array(sa)
 i1=np.array(ia)
 r1=np.array(ra)
-plots(s1,i1,r1)
+#plots(s1,i1,r1)
 
             
             

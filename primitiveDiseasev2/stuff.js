@@ -24,5 +24,5 @@ class MouseCords{
 
 function getMousePixels( pixelWidth, pixelHeight){
 	
-	return [ mouseX > 0 && mouseX < canvasWidth ? Math.round((mouseX - pixelWidth/2)/pixelWidth):0, mouseY > 0 && mouseY < canvasHeight ? Math.round((mouseY - pixelHeight/2)/pixelWidth):0 ]
+	return [ mouseX > startingColumn*pixelWidth && mouseX < canvasWidth ? Math.round((mouseX - pixelWidth/2)/pixelWidth):0, mouseY > 0 && mouseY < canvasHeight ? Math.round((mouseY - pixelHeight/2)/pixelWidth):0 ]
 }
