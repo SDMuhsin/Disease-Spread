@@ -1,4 +1,5 @@
 
+
 var windowWidth = window.innerWidth;
 var windowHeight = window.innerHeight;
 
@@ -6,32 +7,13 @@ var canvasWidth = 600;
 var canvasHeight = 600;
 
 
-function createColorMatrix( rows, columns){
-	
-	//Make a 2D array
-	var matrix = new Array(rows);
-	for( var i = 0; i < columns; i++ ){
-		matrix[i] = new Array(columns);
-	}
-	
-	//Initialise colour
-	for( var i = 0; i < rows; i++){
-		for(var j = 0; j < columns; j++){
-			matrix[i][j] =  255;
-		}
-	}
-	
-	// infect a random tile ( color 0)
-	matrix[Math.round((Math.random() * rows))][Math.round( Math.random() * columns)] = 0; 
-	return matrix;
-}
 function preload(){
 	print("preload");
 	
 }
 function setup(){
 	createCanvas( canvasWidth, canvasHeight);
-	frameRate(1);
+	frameRate(10);
 }
 
 function colorMatrix(matrix,pixelWidth,pixelHeight){
@@ -60,10 +42,10 @@ function spread(matrix){
 			if( i>0 && i < rows-1 && j > 0 && j <columns-1 && matrix[i][j] > 0){ 
 				
 				adjacentInfection = 255*4 - matrix[i-1][j] - matrix[i+1][j] - matrix[i][j-1] - matrix[i][j+1];
-				adjacentInfection = Math.round(adjacentInfection / 4);
+				adjacentInfection = Math.round( adjacentInfection / 4 - fightBackMatrix[i][j]);
 				
 				
-				newMatrix[i][j] = matrix[i][j] - adjacentInfection > 0 ? matrix[i][j] - adjacentInfection : 0;
+				newMatrix[i][j] = matrix[i][j] - adjacentInfection/16 > 0 ? matrix[i][j] - (adjacentInfection/16) : 0;
 			}
 			else{
 				newMatrix[i][j] = matrix[i][j];
@@ -72,21 +54,43 @@ function spread(matrix){
 	}
 	return newMatrix;
 }
+
 //GLOBAL variables	
 var rows = 100;
 var columns = rows;
-var matrix = createColorMatrix(rows,columns);
+var matrix = createColorMatrix(rows,columns,255);
 
+var pixelWidth = canvasWidth/rows;
+var pixelHeight = canvasHeight/columns;
+	
+matrix[Math.round((Math.random() * rows)) -1][Math.round( Math.random() * columns)-1] = 0;// Infect random tile 
 
+let fightBackMatrix = createColorMatrix(rows,columns, 0); 
 
+var startingRow = 0;
+var startingColumn = 0;
 function draw(){
+	
+	
+	
 	background(51);
 	
-	var pixelWidth = canvasWidth/rows;
-	var pixelHeight = canvasHeight/columns;
+
+	
+	mousexPixel = getMousePixels( pixelWidth, pixelHeight)[0];
+	mouseyPixel = getMousePixels( pixelWidth, pixelHeight)[1];
+	
+	matrix = colorCellWhite( matrix , mousexPixel, mouseyPixel);
 	
 	clear();
 	colorMatrix(matrix, pixelWidth, pixelHeight);
 	matrix = spread(matrix);
 	
+}
+
+function mouseClicked(){
+	mousexPixel = getMousePixels( pixelWidth, pixelHeight)[0];
+	mouseyPixel = getMousePixels( pixelWidth, pixelHeight)[1];
+	
+	fightBackMatrix = colorCellWhite( fightBackMatrix, mousexPixel, mouseyPixel );
 }
